@@ -3,7 +3,8 @@
         smudge = git media smudge %f
         required = true
 [user]
-        name = norla
+        name = Mattias Norlander
+	email = mattias.norlander@gmail.com
 
 [difftool "kdiff3"]
     path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
