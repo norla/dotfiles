@@ -4,7 +4,7 @@
 # in ~/dotfiles
 
 dir=~/dotfilesolddir=~/dotfiles_old
-files=".emacs .gitconfig .bash_profile"
+files="emacs gitconfig bash_profile"
 
 echo "Creating $olddir for backup of any existing dotfiles in ~"
 mkdir -p $olddir
