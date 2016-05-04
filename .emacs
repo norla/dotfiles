@@ -7,24 +7,38 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-;; Tabs
-(setq-default indent-tabs-mode nil)
-(setq js-indent-level 2)
-
 ;; Helm
 (require 'helm-config)
 (helm-mode 1)
 (setq helm-locate-command "~/bin/locate-with-mdfind %.0s %s")
 
+;; Highlight symbol
+(require 'highlight-symbol)
+(setq highlight-symbol-idle-delay 0.5)
+(add-hook 'js-mode-hook 'highlight-symbol-mode)
+(add-hook 'js2-mode-hook 'highlight-symbol-mode)
+(add-hook 'js3-mode-hook 'highlight-symbol-mode)
+
 ;; Autocomplete
 (require 'auto-complete)
 (global-auto-complete-mode t)
+  
+;; Projectile
+(projectile-global-mode)
+(setq projectile-enable-caching t)
+(require 'helm-projectile)
+(helm-projectile-on)
+(setq projectile-switch-project-action 'helm-projectile-find-file)
+(add-hook 'projectile-switch-project-hook 'neotree-projectile-action)
+
+;; Perspective moe
+(persp-mode)
+(require 'persp-projectile)
 
 ;; Js/node
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 ;;(add-hook 'js2-mode-hook 'ac-js2-mode)
 (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-
 
 (eval-after-load 'tern
    '(progn
@@ -59,52 +73,29 @@
 ;; Misc
 (global-set-key [C-tab] 'other-window)
 (setq column-number-mode t)
+(setq neo-window-width 38)
 
 ;; Keybindings
+(global-set-key [s-return] 'helm-projectile)
+(global-set-key [f1] 'projectile-persp-switch-project)
+(global-set-key [f2] 'window-ordnung)
+(global-set-key [f3] 'helm-ag-project-root)
 (global-set-key [f8] 'magit-status)
+(global-set-key [f9] 'neotree-find)
+(global-set-key [f10] 'neotree-projectile-action)
+(global-set-key [f12] 'neotree-toggle)
+
+(defun window-ordnung ()
+  "Make nice three-column layout"
+  (interactive)
+  (delete-other-windows)
+  (split-window-right)
+  (split-window-right)
+  (balance-windows-area)
+)
 
 ;; Editorconfig\
 (load "editorconfig")
-
-;; Whitespace detection
-; make carriage returns blue and tabs green
-;;(custom-set-faces
-;; '(my-carriage-return-face ((((class color)) (:background "blue"))) t)
-;; '(my-tab-face ((((class color)) (:background "green"))) t)
-; )
-; add custom font locks to all buffers and all files
-;(add-hook
-; 'font-lock-mode-hook
-; (function
- ; (lambda ()
- ;   (setq
- ;    font-lock-keywords
- ;    (append
- ;     font-lock-keywords
- ;     '(
- ;       ("\r" (0 'my-carriage-return-face t))
- ;       ("\t" (0 'my-tab-face t))
-  ;      ))))))
-
-; make characters after column 80 purple
-(setq whitespace-style
-      (quote (face trailing tab-mark lines-tail)))
-(add-hook 'find-file-hook 'whitespace-mode)
-
-(setq whitespace-display-mappings
-       ;; all numbers are Unicode codepoint in decimal. try (insert-char 182 ) to see it
-      '(
-        (space-mark 32 [183] [46]) ; 32 SPACE, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
-   ;;     (newline-mark 10 [182 10]) ; 10 LINE FEED
-        (tab-mark 9 [9655 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
-        ))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(whitespace-space ((t (:foreground "gray15"))))
- '(whitespace-trailing ((t (:foreground "red" :background "yellow")))))
 
 ;; Custom
 (custom-set-variables

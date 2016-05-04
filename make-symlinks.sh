@@ -5,7 +5,7 @@
 
 dir=~/dotfiles
 olddir=~/dotfiles_old
-files="emacs gitconfig bash_profile"
+files="emacs gitconfig bash_profile tmux.conf"
 
 
 echo "Creating $olddir for backup of any existing dotfiles in ~"

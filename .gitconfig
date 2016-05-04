@@ -20,3 +20,5 @@
     keepBackup = false
 [merge]
     tool = kdiff3
+[push]
+	default = simple
